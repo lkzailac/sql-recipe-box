@@ -10,7 +10,10 @@
 -- YOUR CODE HERE
 SET ROLE recipe_box_app;
 
-
+DROP TABLE IF EXISTS instructions;
+DROP TABLE IF EXISTS recipes;
+DROP TABLE IF EXISTS units_of_measure;
+DROP TABLE IF EXISTS ingredients;
 
 
 
@@ -28,8 +31,8 @@ SET ROLE recipe_box_app;
 CREATE TABLE recipes (
   id SERIAL PRIMARY KEY,
   title VARCHAR(200) NOT NULL,
-  created TIMESTAMP NOT NULL CURRENT_TIMESTAMP,
-  updated TIMESTAMP NOT NULL CURRENT_TIMESTAMP
+  created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 
@@ -56,9 +59,9 @@ CREATE TABLE instructions (
   id SERIAL PRIMARY KEY,
   specification TEXT NOT NULL,
   list_order INTEGER NOT NULL,
-  recipe_id INTEGER NOT NULL, 
+  recipe_id INTEGER NOT NULL,
   FOREIGN KEY (recipe_id) REFERENCES recipes(id)
-)
+);
 
 
 
@@ -74,6 +77,10 @@ CREATE TABLE instructions (
 -- | name        | VARCHAR(20) | NOT NULL    |
 
 -- YOUR CODE HERE
+CREATE TABLE units_of_measure (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(20) NOT NULL
+);
 
 
 
@@ -97,9 +104,14 @@ CREATE TABLE instructions (
 -- | recipe_id          | INTEGER       | FK, NOT NULL |
 
 -- YOUR CODE HERE
-
-
-
+CREATE TABLE ingredients (
+  id SERIAL PRIMARY KEY,
+  amount NUMERIC(5, 2) NOT NULL,
+  unit_of_measure_id INTEGER NOT NULL,
+  FOREIGN KEY (unit_of_measure_id) REFERENCES units_of_measure(id),
+  food_stuff VARCHAR(500) NOT NULL,
+  recipe_id INT NOT NULL REFERENCES recipes(id)
+);
 
 
 
