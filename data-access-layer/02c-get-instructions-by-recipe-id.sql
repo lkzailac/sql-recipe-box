@@ -18,4 +18,6 @@
 -- WHERE ... (here you'll use the $1 parameter)
 
 
--- YOUR CODE HERE
+SELECT * FROM instructions
+WHERE id = $1
+ORDER BY list_order;
